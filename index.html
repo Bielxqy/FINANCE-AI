@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finance AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar glass">
+        <div>
+          <h1>Finance AI</h1>
+          <p class="subtitle" data-i18n="subtitle">Controle mensal inteligente, simples e visual.</p>
+        </div>
+
+        <div class="top-actions">
+          <div class="lang-wrap">
+            <button id="langToggle" class="ghost-btn lang-toggle" type="button" aria-label="Trocar idioma">
+              <img id="langFlag" src="https://flagcdn.com/w20/br.png" alt="Bandeira do idioma" />
+              <span id="langCode">PT-BR</span>
+            </button>
+            <div id="langMenu" class="lang-menu hidden">
+              <button class="lang-option" type="button" data-lang="pt-BR"><img src="https://flagcdn.com/w20/br.png" alt="Brasil" /><span>PT-BR</span></button>
+              <button class="lang-option" type="button" data-lang="pt-PT"><img src="https://flagcdn.com/w20/pt.png" alt="Portugal" /><span>PT-PT</span></button>
+              <button class="lang-option" type="button" data-lang="en"><img src="https://flagcdn.com/w20/us.png" alt="English" /><span>EN</span></button>
+              <button class="lang-option" type="button" data-lang="es"><img src="https://flagcdn.com/w20/es.png" alt="Español" /><span>ES</span></button>
+            </div>
+          </div>
+          <button id="saveBtn" class="ghost-btn" type="button" data-i18n="saveBtn">Salvar</button>
+          <button id="exportBtn" class="ghost-btn" type="button" data-i18n="exportBtn">Exportar planilha</button>
+          <button id="searchBtn" class="ghost-btn" type="button" data-i18n="searchBtn">Pesquisar</button>
+          <button id="compareBtn" class="ghost-btn" type="button" data-i18n="compareBtn">Comparar meses</button>
+          <button id="themeToggle" class="theme-toggle ghost-btn" aria-label="Alternar tema" type="button">
+            <span class="toggle-dot"></span>
+            <span id="themeLabel">Claro</span>
+          </button>
+        </div>
+      </header>
+
+      <section class="grid-layout">
+        <article class="card glass fixed-costs">
+          <div class="section-head">
+            <h2 data-i18n="fixedCostsTitle">Gastos fixos mensais (opcional)</h2>
+            <button id="addFixedBtn" class="mini-btn" type="button">+</button>
+          </div>
+          <div class="dynamic-inputs">
+            <input id="fixedName" type="text" placeholder="Nome do gasto mensal" />
+            <input id="fixedDate" type="date" />
+            <input id="fixedValue" type="number" min="0" step="0.01" placeholder="Valor" />
+          </div>
+          <ul id="fixedList" class="item-list"></ul>
+          <p class="total-line"><span data-i18n="fixedTotal">Total fixo mensal:</span> <strong id="fixedMonthly">R$ 0,00</strong></p>
+
+          <div class="section-head goals-head">
+            <h3 data-i18n="goalsTitle">Metas</h3>
+            <button id="addGoalBtn" class="mini-btn" type="button">+</button>
+          </div>
+          <div class="dynamic-inputs goals-inputs">
+            <input id="goalName" type="text" placeholder="Nome da meta" />
+            <input id="goalCurrent" type="number" min="0" step="0.01" placeholder="Valor atual" />
+            <input id="goalTarget" type="number" min="0.01" step="0.01" placeholder="Valor da meta" />
+          </div>
+          <ul id="goalList" class="item-list"></ul>
+        </article>
+
+        <article class="card glass form-card">
+          <h2 data-i18n="planningTitle">Planejamento mensal</h2>
+          <p class="helper" data-i18n="planningHelper">Preencha os valores para gerar o relatório automaticamente.</p>
+
+          <form id="financeForm" class="form-grid">
+            <label>
+              <span data-i18n="referenceMonth">Mês de referência</span>
+              <input type="month" id="monthRef" required />
+            </label>
+
+            <div class="switch-line">
+              <span data-i18n="includeSalary">Incluir salário</span>
+              <label class="switch">
+                <input type="checkbox" id="salaryEnabled" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <label id="salaryFieldWrap">
+              <span data-i18n="salary">Salário</span>
+              <input type="number" min="0" step="0.01" id="salary" placeholder="0,00" />
+            </label>
+
+            <div class="section-head">
+              <h3 data-i18n="otherIncome">Outras entradas</h3>
+              <button id="addIncomeBtn" class="mini-btn" type="button">+</button>
+            </div>
+            <div class="dynamic-inputs">
+              <input id="incomeName" type="text" placeholder="Nome da entrada" />
+              <input id="incomeDate" type="date" />
+              <input id="incomeValue" type="number" min="0" step="0.01" placeholder="Valor" />
+            </div>
+            <ul id="incomeList" class="item-list"></ul>
+
+            <div class="section-head">
+              <h3 data-i18n="otherExpenses">Outras saídas</h3>
+              <button id="addExpenseBtn" class="mini-btn" type="button">+</button>
+            </div>
+            <div class="dynamic-inputs">
+              <input id="expenseName" type="text" placeholder="Nome da saída" />
+              <input id="expenseDate" type="date" />
+              <input id="expenseValue" type="number" min="0" step="0.01" placeholder="Valor" />
+            </div>
+            <ul id="expenseList" class="item-list"></ul>
+
+            <button type="submit" class="primary-btn" data-i18n="generateDashboard">Gerar dashboard</button>
+          </form>
+        </article>
+
+        <article class="card glass report-card">
+          <h2 data-i18n="summaryTitle">Resumo financeiro</h2>
+          <div class="metrics" id="reportMetrics">
+            <div>
+              <p data-i18n="totalIncomeLabel">Total de entradas</p>
+              <strong id="totalIncome">R$ 0,00</strong>
+            </div>
+            <div>
+              <p data-i18n="totalExpensesLabel">Total de saídas</p>
+              <strong id="totalExpenses">R$ 0,00</strong>
+            </div>
+            <div>
+              <p data-i18n="monthlyBalanceLabel">Saldo do mês</p>
+              <strong id="monthlyBalance">R$ 0,00</strong>
+            </div>
+            <div>
+              <p data-i18n="savingRateLabel">Taxa de economia</p>
+              <strong id="savingRate">0%</strong>
+            </div>
+            <div>
+              <p data-i18n="referenceMonth">Mês de referência</p>
+              <strong id="reportMonth">--/----</strong>
+            </div>
+          </div>
+
+          <div class="goals-progress">
+            <h3 data-i18n="goalsProgressTitle">Progresso das metas</h3>
+            <div id="goalsProgressList" class="goals-progress-list"></div>
+          </div>
+
+          <p id="saveHint" class="helper"></p>
+        </article>
+      </section>
+
+      <dialog id="searchDialog" class="glass modal">
+        <h3 data-i18n="searchReportTitle">Pesquisar relatório</h3>
+        <label>
+          <span data-i18n="searchMonthPlaceholder">Digite mês/ano (ex.: 01/2026)</span>
+          <input id="searchInput" type="text" placeholder="MM/AAAA" />
+        </label>
+        <ul id="searchResults" class="item-list"></ul>
+        <button id="closeSearch" class="ghost-btn" type="button" data-i18n="closeBtn">Fechar</button>
+      </dialog>
+
+      <dialog id="compareDialog" class="glass modal">
+        <h3 data-i18n="compareTitle">Comparação mês a mês</h3>
+        <div class="compare-grid">
+          <label>
+            <span data-i18n="periodA">Período A</span>
+            <select id="compareA"></select>
+          </label>
+          <label>
+            <span data-i18n="periodB">Período B</span>
+            <select id="compareB"></select>
+          </label>
+        </div>
+        <div id="compareResult" class="helper"></div>
+        <button id="runCompare" class="primary-btn" type="button" data-i18n="compareBtnAction">Comparar</button>
+        <button id="closeCompare" class="ghost-btn" type="button" data-i18n="closeBtn">Fechar</button>
+      </dialog>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
